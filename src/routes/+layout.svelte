@@ -1,5 +1,9 @@
 <script lang="ts">
+	import NavBar from '$lib/components/NavBar.svelte';
 	import '../app.postcss';
+
+	import type { LayoutData } from './$types';
+	export let data: LayoutData
 
 	// Floating UI for Popups
 	import { computePosition, autoUpdate, flip, shift, offset, arrow } from '@floating-ui/dom';
@@ -7,21 +11,9 @@
 	storePopup.set({ computePosition, autoUpdate, flip, shift, offset, arrow });
 </script>
 
-<AppBar gridColumns="grid-cols-3" slotDefault="place-self-center" slotTrail="place-content-end" padding="p-2">
-	<svelte:fragment slot="lead">
-		<a href="/">
-			<h3 class="h3">betterboxd</h3>
-		</a>
-	</svelte:fragment>
-	<svelte:fragment slot="trail">
-		<a href="/search">Search</a>
-		<button>
-			<Avatar initials="US" background="bg-primary-500" width="w-12" />
-		</button>
-	</svelte:fragment>
-</AppBar>
-<div class="m-2 flex w-100 justify-center">
-	<div style="max-width: 750px; width: 100%">
+<NavBar user={data.user} userProfile={data.userProfile} />
+<div class="m-2 flex justify-center">
+	<div style="width: 100%; max-width: 750px;">
 		<slot />
 	</div>
 </div>

@@ -30,6 +30,8 @@
   "type": "module",
   "dependencies": {
     "@floating-ui/dom": "1.6.4",
-    "dayjs": "^1.11.11"
+    "dayjs": "^1.11.11",
+    "firebase": "^10.11.1",
+    "firebase-admin": "^12.1.0"
   }
 }

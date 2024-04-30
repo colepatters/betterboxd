@@ -4,13 +4,23 @@
     let searchResults: {}[] = []
 
     let searchQuery = "Spider Man"
+
+    async function handleSubmit() {
+        $page.url.searchParams.set('query', searchQuery)
+        goto($page.url)
+        search()
+    }
+
+    onMount(() => {
+        if ($page.url.searchParams.get('query')) {
+            console.log('query param present, searching')
+            search()
+        }
+    })
     
     async function search() {
         searchResults = []
         loadingSearchResults = true
-
-        // TODO: set url query parameter to search query 
-        // window.location.href = ''
 
         const res = await fetch(`/api/search/tmdb?query=${encodeURIComponent(searchQuery)}`)
         searchResults = (await res.json()).results
@@ -21,12 +31,15 @@
     import loadingAnimation from '$lib/icons/blocks-shuffle-3.svg'
     import ArrowForward from '$lib/icons/arrow_forward.svelte'
     import MovieListBriefEntry from '$lib/components/movie-list-brief/MovieListBriefEntry.svelte';
-    import { goto } from '$app/navigation';
+    import { goto, invalidateAll } from '$app/navigation';
+    import { page } from '$app/stores';
+    import { enhance } from '$app/forms';
+  import { onMount } from 'svelte';
 
     let loadingSearchResults = false
     
 </script>
-<form on:submit={search}>    
+<form on:submit|preventDefault={handleSubmit}>    
     <p>Search</p>
     <div class="flex">
         <input type="search" placeholder="Search..." class="input variant-form-material" bind:value={searchQuery} />

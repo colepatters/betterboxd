@@ -3,3 +3,7 @@
     
     export let data: PageData;
 </script>
+
+<pre>
+    data.user: {JSON.stringify(data.user)}
+</pre>
