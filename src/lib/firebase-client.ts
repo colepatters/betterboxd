@@ -27,8 +27,6 @@ export async function popupSignin() {
 
   const userIdToken = await authData.user.getIdToken();
 
-  console.log(userIdToken);
-
   const res = await fetch("/api/auth/signin", {
     method: "post",
     body: JSON.stringify({ userIdToken }),

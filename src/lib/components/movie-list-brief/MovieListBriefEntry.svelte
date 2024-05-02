@@ -17,9 +17,9 @@
     <div class="flex">
         {#if showImage}
             {#if entry.poster_path}
-                <img class="w-32 object-contain" src={`https://image.tmdb.org/t/p/w500/${entry.poster_path}`} alt="">
+                <img class="w-32 object-contain rounded-xl" src={`https://image.tmdb.org/t/p/w500/${entry.poster_path}`} alt="">
             {:else}
-                <img class="w-32 object-contain" src="https://placehold.co/500x750?text={entry.title.slice(0,1)}" alt="">
+                <img class="w-32 object-contain rounded-xl" src="https://placehold.co/500x750/6b6d79/FFFFFF?text={entry.title.slice(0,1)}" alt="">
             {/if}
         {/if}
 

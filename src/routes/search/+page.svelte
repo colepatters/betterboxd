@@ -13,7 +13,6 @@
 
     onMount(() => {
         if ($page.url.searchParams.get('query')) {
-            console.log('query param present, searching')
             search()
         }
     })
@@ -24,7 +23,6 @@
 
         const res = await fetch(`/api/search/tmdb?query=${encodeURIComponent(searchQuery)}`)
         searchResults = (await res.json()).results
-        console.log(searchResults)
         loadingSearchResults = false
     }
 

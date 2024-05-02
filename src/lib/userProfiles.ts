@@ -1,8 +1,7 @@
 import admin from "firebase-admin";
 import { cert } from "firebase-admin/app";
-import { getUserDataFromUID } from "./firebase-server";
-import { where } from "firebase/firestore";
-import { Query } from "firebase-admin/firestore";
+import { getUserDataFromIdToken, getUserDataFromUID } from "./firebase-server";
+import type { Journal, JournalEntry, UserProfile } from "./types";
 
 if (!admin.apps.length) {
   admin.initializeApp({
@@ -41,9 +40,64 @@ export async function getUserProfileByUID(userUID: string) {
 export async function getUserProfileByDisplayName(displayName: string) {
   const ref = await firestore
     .collection("users")
-    .where("display_name", "==", displayName)
+    .where("displayName", "==", displayName)
     .get();
 
   const userUID = ref.docs[0].id;
   return await getUserDataFromUID(userUID);
+}
+
+export async function checkDisplayNameTaken(displayName: string) {
+  const ref = await firestore
+    .collection("users")
+    .where("displayName", "==", displayName)
+    .get();
+
+  return !ref.empty;
+}
+
+export async function changeOwnDisplayName(
+  displayName: string,
+  userIdToken: string
+) {
+  // last-minute check that the username is not taken
+  const taken = await checkDisplayNameTaken(displayName);
+  if (taken) throw new Error("display name taken");
+
+  const user = await getUserDataFromIdToken(userIdToken);
+
+  const userProfileRef = admin.firestore().doc(`users/${user.uid}`);
+  if (!(await userProfileRef.get()).exists)
+    throw new Error("user does not exist");
+  await userProfileRef.update({
+    displayName,
+  });
+
+  return;
+}
+
+export function validateDisplayName(displayName: string) {
+  let valid = true;
+  let reason = "";
+
+  if (displayName.length < 4 || displayName.length > 12) {
+    valid = false;
+    reason = "display name must be between 4 and 12 characters";
+  }
+
+  // todo = check profanity becasue I'm lame
+
+  return { valid, reason };
+}
+
+export function getUserFavorites(journal: Journal) {
+  let favorites = {};
+
+  for (const [journalEntryId, journalEntry] of Object.entries(journal)) {
+    if (journalEntry.favorite) {
+      favorites[journalEntryId] = journalEntry;
+    }
+  }
+
+  return favorites;
 }

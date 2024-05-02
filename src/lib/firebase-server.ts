@@ -11,7 +11,6 @@ if (!admin.apps.length) {
 function removeSensitiveUserData(userData: UserRecord) {
   return {
     uid: userData.uid,
-    displayName: userData.displayName,
     photoURL: userData.photoURL,
   };
 }

@@ -12,7 +12,6 @@ export const handle: Handle = async ({ event, resolve }) => {
       event.locals.user = user;
 
       const userProfile = await getUserProfileByUID(user.uid);
-      console.log(userProfile);
       event.locals.userProfile = userProfile;
     } else {
       event.locals.user = null;

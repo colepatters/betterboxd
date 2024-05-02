@@ -1,7 +1,14 @@
+import { goto } from "$app/navigation";
 import { getMovie } from "$lib/tmdb/tmdb";
+import { newJournalEntry } from "$lib/userJournal";
+import { error, redirect } from "@sveltejs/kit";
 import type { PageServerLoad } from "./$types";
 
-export const load = (async ({ url }) => {
+export const load = (async ({ url, locals, cookies }) => {
+  if (!cookies.get("__session")) {
+    return error(401, "Must be authorized!");
+  }
+
   const movieId = url.searchParams.get("movieId");
   if (!movieId) return {};
 
@@ -11,3 +18,30 @@ export const load = (async ({ url }) => {
     movie,
   };
 }) satisfies PageServerLoad;
+
+export const actions = {
+  default: async (event) => {
+    const formData = await event.request.formData();
+
+    const movieId = event.url.searchParams.get("movieId");
+    const dateWatched = formData.get("dateWatched");
+    const watchedBefore = formData.get("watchedBefore") === "on" ? true : false;
+    const review =
+      formData.get("review") === "" ? null : formData.get("review");
+    const rating = parseFloat(formData.get("rating"));
+    const favorite = formData.get("favorite") === "true" ? true : false;
+
+    const journalEntry = {
+      movieId,
+      dateWatched,
+      watchedBefore,
+      review,
+      rating,
+      favorite,
+    };
+
+    await newJournalEntry(journalEntry, event.cookies.get("__session"));
+
+    redirect(303, `users/${event.locals.userProfile.profile.displayName}`);
+  },
+};
