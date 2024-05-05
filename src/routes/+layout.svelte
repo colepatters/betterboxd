@@ -23,8 +23,9 @@
 
 <Modal components={modalRegistry} />
 <NavBar user={data.user} userProfile={data.userProfile} />
+
 <div class="m-2 flex justify-center">
-	<div style="width: 100%; max-width: 750px;">
+	<div class="" style="width: 100%; max-width: 750px;">
 		<slot />
 	</div>
 </div>

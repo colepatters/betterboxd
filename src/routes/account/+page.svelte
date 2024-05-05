@@ -5,7 +5,7 @@
     export let data: PageData;
 </script>
 
-<UserProfile userProfile={data.userProfile} />
+<UserProfile user={data.user} />
 
 <!-- <pre>
     data.user: {JSON.stringify(data.user)}

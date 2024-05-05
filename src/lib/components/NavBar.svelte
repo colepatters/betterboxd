@@ -2,23 +2,23 @@
 
     import { AppBar, Avatar, ListBox, ListBoxItem, popup, type PopupSettings } from "@skeletonlabs/skeleton";
 
-    import { popupSignin } from "$lib/firebase-client";
-  import { onMount } from "svelte";
+	import { onMount } from "svelte";
+	import { goto, invalidate, invalidateAll } from "$app/navigation";
+  import type { User } from "$lib/types";
 
     const profileIconDropdown: PopupSettings = {
-        // Represents the type of event that opens/closed the popup
         event: 'click',
-        // Matches the data-popup value on your popup element
         target: 'profileIconDropdown',
-        // Defines which side of your trigger the popup will appear
         placement: 'bottom',
     };
 
-    async function signin() {
-        const res = await popupSignin()
-    }
+	async function signOut() {
+		await fetch('/api/auth/signout', {method: 'post'})
+		await goto('/')
+		invalidateAll()
+	}
 
-	export let userProfile;
+	export let user: User;
 
 </script>
 <AppBar gridColumns="grid-cols-3" slotDefault="place-self-center" slotTrail="place-content-end" padding="p-2">
@@ -29,23 +29,23 @@
 	</svelte:fragment>
 	<svelte:fragment slot="trail">
 		<a href="/search">Search</a>
-		{#if userProfile}
+		{#if user}
 			<button use:popup={profileIconDropdown}>
-				<Avatar src="{userProfile.user.photoURL}" background="bg-primary-500" width="w-12" />
+				<Avatar initials={user.displayName} background="bg-primary-500" width="w-12" />
 			</button>
 		{:else}
-			<button on:click={signin} class="h-12">sign in</button>
+			<a href="/auth/signin" class="btn variant-filled">sign in</a>
 		{/if}
 	</svelte:fragment>
 </AppBar>
 
 <!-- profile click dropdown -->
-{#if userProfile}
+{#if user}
 	<div class="card p-4 w-72 shadow-xl space-y-2" data-popup="profileIconDropdown">
-		<a href="/users/{userProfile.profile.displayName}" class="btn variant-filled w-full">Profile</a>
+		<a href="/users/{user.displayName}" class="btn variant-filled w-full">Profile</a>
 		<a href="/about" class="btn variant-filled w-full">About betterboxd</a>
 		<a href="/account" class="btn variant-filled w-full">Settings</a>
-		<a href="" class="btn variant-filled-warning w-full">Sign Out</a>
+		<a href="" on:click={signOut} class="btn variant-filled-warning w-full">Sign Out</a>
 		<div class="arrow bg-surface-100-800-token" />
 	</div>
 {/if}

@@ -7,7 +7,7 @@ export type JournalEntry = {
   favorite: boolean;
 };
 
-export type UserProfile = {
+export type User = {
   created: any;
   displayName: string;
   journal: {

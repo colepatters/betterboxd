@@ -1,6 +1,6 @@
 import { error, json } from "@sveltejs/kit";
 import type { RequestHandler } from "./$types";
-import { getUserProfileByUID } from "$lib/userProfiles";
+import { getUserByUID } from "$lib/userProfiles/user-profiles-server";
 
 export const GET: RequestHandler = async ({ url }) => {
   const userUID = url.searchParams.get("useruid");
@@ -14,6 +14,6 @@ export const GET: RequestHandler = async ({ url }) => {
     return error(400, "searching by display name not implemented yet");
   }
 
-  const userData = await getUserProfileByUID(userUID);
+  const userData = await getUserByUID(userUID);
   return json(userData);
 };

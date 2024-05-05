@@ -1,13 +1,13 @@
-import {
-  getUserProfileByDisplayName,
-  getUserProfileByUID,
-} from "$lib/userProfiles";
+import { getUserByDisplayName } from "$lib/userProfiles/user-profiles-server";
+import { error } from "@sveltejs/kit";
 import type { PageServerLoad } from "./$types";
 
 export const load = (async ({ params }) => {
-  const user = await getUserProfileByDisplayName(params.userDisplayName);
+  const userRes = await getUserByDisplayName(params.userDisplayName);
+
+  if (!userRes.ok) return error(400, userRes.reason);
 
   return {
-    user,
+    user: userRes.profile,
   };
 }) satisfies PageServerLoad;

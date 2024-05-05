@@ -7,10 +7,10 @@
     import StarEmpty from "$lib/icons/star_empty.svelte";
     import StarHalf from "$lib/icons/star_half.svelte";
     import StarFull from "$lib/icons/star_full.svelte";
-  import { onMount } from "svelte";
-  import MovieDetails from "./MovieDetails.svelte";
-  import { getStores } from "$app/stores";
-  import Close from "$lib/icons/close.svelte";
+    import { onMount } from "svelte";
+    import MovieDetails from "./MovieDetails.svelte";
+    import { getStores } from "$app/stores";
+    import Close from "$lib/icons/close.svelte";
 
     export let movie: MovieFullDetails
     let journalEntry: JournalEntry
@@ -25,6 +25,10 @@
     function closeModal() {
         modalStore.close()
     }
+
+    import { page } from "$app/stores";
+
+    const userDisplayName = $page.params.userDisplayName
 </script>
 
 {#if movie && journalEntry}
@@ -43,6 +47,10 @@
             <a class="btn variant-filled-primary w-full" href="/search">Search for a movie</a>
         {/if}
     </div>
+
+    {#if userDisplayName}
+        <h3 class="h3">{userDisplayName}'s review</h3>
+    {/if}
 
     {#if journalEntry.review}
         <dd style="max-height:100%"><i>

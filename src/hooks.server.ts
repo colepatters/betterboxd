@@ -1,30 +1,12 @@
-import { auth } from "$lib/firebase-client";
-import { getUserDataFromIdToken } from "$lib/firebase-server";
-import { getUserProfileByUID } from "$lib/userProfiles";
+import { getUserBySessionToken } from "$lib/userProfiles/user-profiles-server";
 import { error, type Handle } from "@sveltejs/kit";
 
 export const handle: Handle = async ({ event, resolve }) => {
-  const userIdToken = event.cookies.get("__session");
+  const sessionToken = event.cookies.get("__session");
 
-  try {
-    if (userIdToken) {
-      const user = await getUserDataFromIdToken(userIdToken);
-      event.locals.user = user;
-
-      const userProfile = await getUserProfileByUID(user.uid);
-      event.locals.userProfile = userProfile;
-    } else {
-      event.locals.user = null;
-      event.locals.userProfile = null;
-    }
-  } catch (e) {
-    if (e.message.includes("Firebase ID token has expired")) {
-      event.cookies.delete("__session", {
-        path: "/",
-      });
-
-      // todo: add notification that session expired
-    } else return error(500, e.message);
+  if (sessionToken) {
+    const user = await getUserBySessionToken(sessionToken);
+    event.locals.user = user;
   }
 
   const response = await resolve(event);

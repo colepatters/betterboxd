@@ -8,11 +8,8 @@ if (!admin.apps.length) {
   });
 }
 
-function removeSensitiveUserData(userData: UserRecord) {
-  return {
-    uid: userData.uid,
-    photoURL: userData.photoURL,
-  };
+export function getAdmin() {
+  return admin;
 }
 
 // it's fine to pass potentially sensitive data back because this function will
@@ -22,7 +19,6 @@ export async function getUserDataFromIdToken(userIdToken: string) {
   return res;
 }
 
-export async function getUserDataFromUID(userUID: string) {
-  const data = await admin.auth().getUser(userUID);
-  return removeSensitiveUserData(data);
-}
+export async function getUserDataFromUID(userUID: string) {}
+
+export async function userEmailSignUp() {}

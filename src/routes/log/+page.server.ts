@@ -6,7 +6,14 @@ import type { PageServerLoad } from "./$types";
 
 export const load = (async ({ url, locals, cookies }) => {
   if (!cookies.get("__session")) {
-    return error(401, "Must be authorized!");
+    // console.log(url.pathname);
+
+    return redirect(
+      301,
+      `/signin?callback=${encodeURIComponent(
+        url.pathname + "?" + url.searchParams
+      )}`
+    );
   }
 
   const movieId = url.searchParams.get("movieId");
@@ -42,6 +49,6 @@ export const actions = {
 
     await newJournalEntry(journalEntry, event.cookies.get("__session"));
 
-    redirect(303, `users/${event.locals.userProfile.profile.displayName}`);
+    redirect(303, `users/${event.locals.user.displayName}`);
   },
 };

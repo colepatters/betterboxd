@@ -12,3 +12,4 @@ vite.config.ts.timestamp-*
 package-lock.json
 .vscode/
 betterboxd-service-account.json
+ui-debug.log

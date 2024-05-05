@@ -2,9 +2,12 @@ import { goto, invalidateAll } from "$app/navigation";
 import { initializeApp } from "firebase/app";
 import {
   browserLocalPersistence,
+  connectAuthEmulator,
+  EmailAuthProvider,
   getAuth,
   GoogleAuthProvider,
   setPersistence,
+  signInWithEmailAndPassword,
   signInWithPopup,
 } from "firebase/auth";
 
@@ -19,13 +22,16 @@ export const clientFirebaseConfig = {
 };
 
 initializeApp(clientFirebaseConfig);
-export const provider = new GoogleAuthProvider();
+export const googleProvider = new GoogleAuthProvider();
+const emailProvider = new EmailAuthProvider();
 export const auth = getAuth();
 
-export async function popupSignin() {
-  const authData = await signInWithPopup(auth, provider);
+export async function popupGoogleSignin() {
+  const authData = await signInWithPopup(auth, googleProvider);
 
   const userIdToken = await authData.user.getIdToken();
+
+  // console.log;
 
   const res = await fetch("/api/auth/signin", {
     method: "post",
@@ -38,7 +44,34 @@ export async function popupSignin() {
   invalidateAll();
 
   // if not, prompt them to finish their account setup by adding a display name
-  goto("/account?addUsername=true");
+  // goto("/account?addUsername=true");
+
+  return authData;
+}
+
+export async function emailSignin(email: string, password: string) {
+  const authData = await signInWithEmailAndPassword(
+    auth,
+    "cpatterson@xyner.com",
+    "dogfoodlid"
+  );
+
+  const userIdToken = await authData.user.getIdToken();
+
+  // console.log;
+
+  const res = await fetch("/api/auth/signin", {
+    method: "post",
+    body: JSON.stringify({ userIdToken }),
+  });
+
+  // check if user already has account
+
+  // if so, reload the page
+  invalidateAll();
+
+  // if not, prompt them to finish their account setup by adding a display name
+  // goto("/account?addUsername=true");
 
   return authData;
 }
