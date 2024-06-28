@@ -1,0 +1,21 @@
+<link rel="stylesheet" href="/public/css/navbar.css" />
+
+<div id="navbar-main">
+  <a href="/">
+    <h2>betterboxd</h2>
+  </a>
+
+  <div>
+    {{>search-bar}}
+
+    {{#if signedIn}}
+    <div>
+      <a href="/profile">
+        <h4>{{ user.displayName }}</h4>
+      </a>
+    </div>
+    {{/if}}
+  </div>
+</div>
+
+{{>search-bar}}

@@ -7,7 +7,20 @@
   <label for="password">Password</label>
   <input type="password" name="password" id="password-input" required />
 
+  {{#if badPassword}}
+    <p style="color: red;">The password you entered was incorrect, please try
+      again!</p>
+  {{/if}}
+
+  {{#if notFound}}
+    <p style="color: red;">Could not find an account with that email</p>
+  {{/if}}
+
   <br />
 
   <button type="submit">Sign in</button>
+
+  <br />
+
+  <p>Need an account? <a href="/register">Create one here!</a></p>
 </form>
