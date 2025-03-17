@@ -5,15 +5,15 @@
 	import type { LayoutData } from './$types';
 	export let data: LayoutData
 
-	import { initializeStores, Modal, type ModalComponent } from '@skeletonlabs/skeleton';
+	import { autoModeWatcher, initializeStores, Modal, type ModalComponent } from '@skeletonlabs/skeleton';
 	initializeStores();
 	
 	import JournalEntryModal from '$lib/components/JournalEntryModal.svelte';
 	const modalRegistry: Record<string, ModalComponent> = {
-		// Set a unique modal ID, then pass the component reference
 		journalEntry: { ref: JournalEntryModal },
 	};
 
+	import { Toast } from '@skeletonlabs/skeleton';
 
 	// Floating UI for Popups
 	import { computePosition, autoUpdate, flip, shift, offset, arrow } from '@floating-ui/dom';
@@ -21,7 +21,11 @@
 	storePopup.set({ computePosition, autoUpdate, flip, shift, offset, arrow });
 </script>
 
+<svelte:head>{@html '<script>(' + autoModeWatcher.toString() + ')();</script>'}</svelte:head>
+
 <Modal components={modalRegistry} />
+<Toast />
+
 <NavBar user={data.user} userProfile={data.userProfile} />
 
 <div class="m-2 flex justify-center">

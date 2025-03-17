@@ -32,10 +32,11 @@
   "dependencies": {
     "@floating-ui/dom": "1.6.4",
     "@types/bcrypt": "^5.0.2",
+    "@types/nodemailer": "^6.4.15",
     "bcrypt": "^5.1.1",
     "dayjs": "^1.11.11",
-    "firebase": "^10.11.1",
     "firebase-admin": "^12.1.0",
-    "luxon": "^3.4.4"
+    "luxon": "^3.4.4",
+    "nodemailer": "^6.9.13"
   }
 }

@@ -29,10 +29,12 @@
     import { page } from "$app/stores";
 
     const userDisplayName = $page.params.userDisplayName
+
+    export let ownProfile: boolean;
 </script>
 
 {#if movie && journalEntry}
-<div class="bg-surface-500 p-4 rounded-xl overflow-auto" style="width: 100%; max-width: 750px; max-height: 100vh">
+<div class="bg-surface-500 text-white p-4 rounded-xl overflow-auto" style="width: 100%; max-width: 750px; max-height: 100vh">
     <header class="flex justify-end justify-end mb-3">
         <button class="btn btn-icon" on:click={closeModal}>
             <Close size={24} />

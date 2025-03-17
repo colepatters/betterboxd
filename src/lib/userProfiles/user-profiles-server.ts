@@ -1,5 +1,5 @@
 import { getFirestore } from "$lib/db/server-firestore";
-import type { User } from "$lib/types";
+import type { User, UserCredentials } from "$lib/types";
 
 import {
   checkDisplayNameValid,
@@ -64,6 +64,26 @@ export async function getUserByDisplayName(displayName: string) {
   return {
     ok: true,
     profile,
+  };
+}
+
+export async function getUserUIDFromDisplayName(displayName: string) {
+  const firestore = getFirestore();
+  const ref = await firestore
+    .collection("users")
+    .where("displayName", "==", displayName)
+    .get();
+
+  if (ref.empty) {
+    return {
+      ok: false,
+      reason: "could not find user with that display name",
+    };
+  }
+
+  return {
+    ok: true,
+    uid: ref.docs[0].id,
   };
 }
 
@@ -140,5 +160,30 @@ export async function changeOwnDisplayName(
 
   return {
     ok: true,
+  };
+}
+
+export async function getUserCredentialsBySessionToken(sessionToken: string) {
+  const firestore = getFirestore();
+  const ref = await firestore
+    .collection("userCredentials")
+    .where("sessionToken", "==", sessionToken)
+    .get();
+
+  if (ref.empty)
+    return {
+      ok: false,
+      reason: "could not locate user by session token",
+    };
+
+  const userUID = ref.docs[0].ref.id;
+  const userCredentials = ref.docs[0].data();
+
+  return {
+    ok: true,
+    userCredentials: {
+      uid: userUID,
+      ...userCredentials,
+    } as UserCredentials,
   };
 }

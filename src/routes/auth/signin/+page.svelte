@@ -9,11 +9,12 @@
         <input class="input variant-material" name="email" type="email" placeholder="email">
         <input class="input variant-material" name="password" type="password" placeholder="password">
         <button class="btn variant-filled-primary w-full">Sign in</button>
+        <button class="btn variant-filled w-full">Use a passkey</button>
     </form>
-
+    
     <hr class="w-3/6">
-
+    
     <div class="flex justify-center mt-2">
-        <button class="btn variant-filled">Use a passkey</button>
+        <a href="/auth/signup" class="btn variant-filled w-full">Sign up</a>
     </div>
 </div>

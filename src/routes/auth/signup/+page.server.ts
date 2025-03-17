@@ -19,7 +19,6 @@ export const actions = {
       return error(500, "formdata incomplete");
     }
 
-    console.log(email, displayName, password);
     const signupStatus = await emailSignup(email, displayName, password);
 
     if (!signupStatus.ok) {

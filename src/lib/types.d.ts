@@ -18,3 +18,10 @@ export type User = {
 export type Journal = {
   [entryId]: JournalEntry;
 };
+
+export type UserCredentials = {
+  uid: string;
+  email: string;
+  password: string;
+  sesisonToken: string;
+};

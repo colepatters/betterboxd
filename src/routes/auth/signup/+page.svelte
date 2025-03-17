@@ -10,5 +10,6 @@
         <input class="input variant-material" name="displayName" type="text" placeholder="display name" required>
         <input class="input variant-material" name="password" type="password" placeholder="password" required>
         <button class="btn variant-filled-primary w-full">Sign up</button>
+        <a href="/auth/signin" class="btn variant-filled w-full">Sign in</a>
     </form>
 </div>

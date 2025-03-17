@@ -15,7 +15,7 @@
     }
 </script>
 
-<div class="flex w-100 bg-surface-500 p-3 rounded-xl space-x-2 justify-between items-center">
+<div class="flex w-100 bg-surface-500 text-white p-3 rounded-xl space-x-2 justify-between items-center">
     <div class="flex items-center space-x-2 ">
         <Avatar initials={user.displayName} width="h-24" background="bg-primary-500" />
         <div>
